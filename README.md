@@ -10,7 +10,30 @@ tariff sheets. React + TypeScript + Vite + Tailwind CSS. All amounts are in Ethi
 npm install
 npm run dev      # dev server
 npm run build    # type-check + production build to dist/
+npm run preview  # serve the production build locally (needed to test PWA install/offline)
 ```
+
+## Mobile app (PWA)
+
+This is a Progressive Web App - there is no separate native app to build or distribute.
+Once deployed (e.g. to Vercel), any user can install it straight from their mobile browser:
+
+- **Android (Chrome)**: open the site → menu (⋮) → "Install app" / "Add to Home screen".
+- **iPhone/iPad (Safari)**: open the site → Share button → "Add to Home Screen".
+
+It then behaves like a native app: its own icon, launches full-screen (no browser chrome),
+and - because the whole calculator is client-side computation with no backend calls - works
+fully offline after the first load. The service worker (`vite-plugin-pwa`, configured in
+`vite.config.ts`) precaches all app assets on install and serves them from cache thereafter.
+
+Note: PWA install prompts and service worker registration require either `https://` or
+`localhost` - `npm run dev`/`preview` on `localhost` work for testing; a plain internal IP
+without HTTPS will not offer the install prompt.
+
+To change the app icon, edit `public/icon-master.svg` (and `icon-maskable.svg`, which needs
+extra padding since OSes crop maskable icons to a circle/shape), then re-rasterize to
+`icon-192.png`, `icon-512.png`, `icon-maskable-512.png` and `apple-touch-icon.png` at their
+existing sizes and re-run `npm run build`.
 
 ## How the calculator is organized
 
