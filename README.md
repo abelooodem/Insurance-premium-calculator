@@ -30,10 +30,26 @@ Note: PWA install prompts and service worker registration require either `https:
 `localhost` - `npm run dev`/`preview` on `localhost` work for testing; a plain internal IP
 without HTTPS will not offer the install prompt.
 
-To change the app icon, edit `public/icon-master.svg` (and `icon-maskable.svg`, which needs
-extra padding since OSes crop maskable icons to a circle/shape), then re-rasterize to
-`icon-192.png`, `icon-512.png`, `icon-maskable-512.png` and `apple-touch-icon.png` at their
-existing sizes and re-run `npm run build`.
+The app icon is the company logo, sourced from `brand-assets/brand-logo-source.png` (kept
+outside `public/` so it isn't bundled into the app or precached by the service worker - it's
+a reference for regeneration only). To change it, replace that file and regenerate the actual
+icon files with Pillow:
+
+```python
+from PIL import Image
+img = Image.open('brand-assets/brand-logo-source.png').convert('RGB')
+# crop to a square first if the source isn't already square, then:
+for size, path in [(192, 'public/icon-192.png'), (512, 'public/icon-512.png'),
+                    (180, 'public/apple-touch-icon.png'), (64, 'public/favicon.png'),
+                    (32, 'public/favicon-32.png')]:
+    img.resize((size, size), Image.LANCZOS).save(path, 'PNG')
+
+# Maskable icon: OSes crop this to a circle/shape, so pad ~25% margin around the logo
+# on a solid background (matching the logo's own background colour) before saving as
+# public/icon-maskable-512.png - see git history for the exact padding logic used.
+```
+
+Then re-run `npm run build`.
 
 ## How the calculator is organized
 
