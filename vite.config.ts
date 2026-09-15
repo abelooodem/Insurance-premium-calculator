@@ -10,13 +10,13 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.png', 'favicon-32.png', 'apple-touch-icon.png'],
       manifest: {
         name: 'Insurance Premium Calculator',
         short_name: 'Premium Calc',
         description: 'Ethiopian insurance underwriting & quotation calculator - Motor, Fire, Marine, Engineering and more.',
-        theme_color: '#1d4ed8',
-        background_color: '#f8fafc',
+        theme_color: '#303d74',
+        background_color: '#e5e5e5',
         display: 'standalone',
         start_url: '/',
         scope: '/',
